@@ -86,12 +86,12 @@ public class DiningPhilosophers {
         
         Channel channels[] = new Channel[numberOfPhilosophers];
         for(int i = 0;  i<numberOfPhilosophers; i++){    
-           channels[i] = new Channel();
+           channels[i] = new Channel(""+i);
         }
         
         Fork forks[] = new Fork[numberOfPhilosophers];
         for(int i = 0;i< numberOfPhilosophers;i++){
-            forks[i] = new Fork(channels[i]);
+          //  forks[i] = new Fork(channels[i]);
         }
         
         Philosopher philosophers[] = new Philosopher[numberOfPhilosophers];

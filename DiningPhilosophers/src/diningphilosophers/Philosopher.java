@@ -36,18 +36,12 @@ public class Philosopher extends Thread {
         while (counter < 2) {
             counter++;
             think();
-            if (turn) {
+            
                 pickUpLeftChopstick();
-                System.out.println(name+" picked the left fork!!!");
+                //System.out.println(name+" picked the left fork!!!");
                 pickUpRightChopstick();
-                System.out.println(name+" picked the right fork!!!");
-            } else {
-               
-                   pickUpRightChopstick(); 
-                   System.out.println(name+" picked the right fork!!!");
-                   pickUpLeftChopstick();
-                   System.out.println(name+" picked the left fork!!!");
-            }
+                //System.out.println(name+" picked the right fork!!!");
+            
             eat();
             putDownChopsticks();
         }
@@ -76,18 +70,22 @@ public class Philosopher extends Thread {
         }
     }
 
-    public void pickUpLeftChopstick() {
+    public synchronized void pickUpLeftChopstick() {
+             
         dummy = leftChannel.receive();
+        System.out.println(name+" picked the left fork!!!");
     }
 
-    public void pickUpRightChopstick() {
+    public synchronized void pickUpRightChopstick() {
         dummy = rightChannel.receive();
+        System.out.println(name+" picked the right fork!!!");
     }
 
-    public void putDownChopsticks() {
+    public synchronized void putDownChopsticks() {
         leftChannel.send(true);
+            System.out.println(name+ " left left");
         rightChannel.send(true);
-          System.out.println(name+" left both forks");
+          System.out.println(name+" left right");
     }
 
 }
