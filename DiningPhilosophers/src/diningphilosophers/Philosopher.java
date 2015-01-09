@@ -36,21 +36,24 @@ public class Philosopher extends Thread {
         while (counter < 2) {
             counter++;
             think();
-            
+            if (turn) {
                 pickUpLeftChopstick();
                 //System.out.println(name+" picked the left fork!!!");
                 pickUpRightChopstick();
                 //System.out.println(name+" picked the right fork!!!");
-            
+            } else {
+                pickUpRightChopstick();
+                pickUpLeftChopstick();
+            }
             eat();
             putDownChopsticks();
         }
-          System.out.println(name+" finish eating");
+        System.out.println(name + " IS DONE");
     }
 
     public void eat() {
         Random rand = new Random();
-        System.out.println(name+" is eating!!!");
+        System.out.println(name + " is eating!!!");
         int eatTime = rand.nextInt(1000);
         try {
             Thread.sleep(eatTime);
@@ -61,7 +64,7 @@ public class Philosopher extends Thread {
 
     public void think() {
         Random rand = new Random();
-        System.out.println(name+" is thinking!!!");
+        System.out.println(name + " is thinking!!!");
         int thinkTime = 1000 + rand.nextInt(1000);
         try {
             Thread.sleep(thinkTime);
@@ -71,21 +74,21 @@ public class Philosopher extends Thread {
     }
 
     public synchronized void pickUpLeftChopstick() {
-             
+
         dummy = leftChannel.receive();
-        System.out.println(name+" picked the left fork!!!");
+        System.out.println(name + " picked the left fork!!!");
     }
 
     public synchronized void pickUpRightChopstick() {
         dummy = rightChannel.receive();
-        System.out.println(name+" picked the right fork!!!");
+        System.out.println(name + " picked the right fork!!!");
     }
 
     public synchronized void putDownChopsticks() {
-        leftChannel.send(true);
-            System.out.println(name+ " left left");
-        rightChannel.send(true);
-          System.out.println(name+" left right");
+        leftChannel.send(true, -1);
+        System.out.println(name + " puts down the left fork");
+        rightChannel.send(true, -1);
+        System.out.println(name + " puts down the right fork");
     }
 
 }
