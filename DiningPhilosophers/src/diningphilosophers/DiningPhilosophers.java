@@ -20,6 +20,7 @@ public class DiningPhilosophers {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        /*
         int numberOfPhilosophers = 5;
         
         final Channel a = new Channel();
@@ -78,28 +79,39 @@ public class DiningPhilosophers {
         });
         t3.start();
         
-      
+      */
+        
+        int numberOfPhilosophers = 3;
         
         
-        
-        /*
-        Channel channels[] = new Channel[2*numberOfPhilosophers];
-        for(int i = 0;i < numberOfPhilosophers;i++){    
+        Channel channels[] = new Channel[numberOfPhilosophers];
+        for(int i = 0;  i<numberOfPhilosophers; i++){    
            channels[i] = new Channel();
-        }
-        
-        
-        Philosopher philosophers[] = new Philosopher[numberOfPhilosophers];
-        for(int i = 0;i< numberOfPhilosophers;i++){
-            philosophers[i] = new Philosopher("" + i,channels[i],channels[(i+1)%numberOfPhilosophers]);
         }
         
         Fork forks[] = new Fork[numberOfPhilosophers];
         for(int i = 0;i< numberOfPhilosophers;i++){
             forks[i] = new Fork(channels[i]);
         }
-        */
         
+        Philosopher philosophers[] = new Philosopher[numberOfPhilosophers];
+        for(int i = 0;i< numberOfPhilosophers;i++){
+            boolean turn=true;
+            if(i%2==0){
+                turn=false;
+            }
+            philosophers[i] = new Philosopher("" + i,channels[i],channels[(i+1)%numberOfPhilosophers],turn);
+        }
+        
+         
+         
+        for(int i = 0;i< numberOfPhilosophers;i++){
+            forks[i].start();
+        }
+        
+        for(int i = 0;i< numberOfPhilosophers;i++){
+          philosophers[i].start();
+        }
      
         
         
