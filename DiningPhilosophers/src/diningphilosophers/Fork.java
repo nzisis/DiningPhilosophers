@@ -13,13 +13,20 @@ package diningphilosophers;
 public class Fork extends Thread{
     
     private Channel channel;
-    
-    
+     
     private boolean dummy;
     
     
     public Fork(Channel channel){
         this.channel = channel;
+    }
+    
+    @Override
+    public void run() {
+        while(true){
+           channel.send(true);
+           dummy = channel.receive();
+        }
     }
     
 }

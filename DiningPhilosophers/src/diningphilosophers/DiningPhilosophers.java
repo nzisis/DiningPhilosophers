@@ -6,6 +6,9 @@
 
 package diningphilosophers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Θανάσης
@@ -19,7 +22,68 @@ public class DiningPhilosophers {
         // TODO code application logic here
         int numberOfPhilosophers = 5;
         
-           Channel channels[] = new Channel[2*numberOfPhilosophers];
+        final Channel a = new Channel();
+        
+        Channel b = new Channel();
+ 
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    System.out.println("First Receiver");
+                    a.receive();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        t1.start();
+        
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    
+                    Thread.sleep(3000);
+                    System.out.println("Second Receiver");
+                    a.receive();
+                    
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        t2.start();
+        
+        
+        
+        //CountDownLatch
+        Thread t3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    
+                    System.out.println("First Send");
+                    a.send(true);
+                    Thread.sleep(2000);
+                    
+                    System.out.println("Second Send");
+                    a.send(true);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        t3.start();
+        
+      
+        
+        
+        
+        /*
+        Channel channels[] = new Channel[2*numberOfPhilosophers];
         for(int i = 0;i < numberOfPhilosophers;i++){    
            channels[i] = new Channel();
         }
@@ -34,7 +98,7 @@ public class DiningPhilosophers {
         for(int i = 0;i< numberOfPhilosophers;i++){
             forks[i] = new Fork(channels[i]);
         }
-        
+        */
         
      
         

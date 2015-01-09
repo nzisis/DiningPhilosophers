@@ -31,7 +31,9 @@ public class Philosopher extends Thread{
     
     @Override
     public void run() {
-        while(true){
+        int counter = 0;
+        while(counter < 2){
+            counter++;
             think();
             pickUpLeftChopstick();
             pickUpRightChopstick();
@@ -52,9 +54,9 @@ public class Philosopher extends Thread{
     
     public void think(){
         Random rand = new Random();
-        int thinkTime = rand.nextInt(1000);
+        int thinkTime = 1000 + rand.nextInt(1000);
          try {
-            Thread.sleep(1000 + thinkTime);
+            Thread.sleep(thinkTime);
         } catch (InterruptedException ex) {
             Logger.getLogger(Philosopher.class.getName()).log(Level.SEVERE, null, ex);
         }
