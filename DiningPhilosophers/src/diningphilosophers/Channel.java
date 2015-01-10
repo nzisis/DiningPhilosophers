@@ -61,13 +61,13 @@ public class Channel {
      return message;
      }*/
     //Object object2;
-    public boolean send(boolean value, int timeout) {
+    public boolean send(boolean value,int timeout,String messageToPrint) {
         Boolean msg = new Boolean(value);
         try {
             synchronized (senderMonitor) {
-                System.out.println(name + " send blocked");
+                System.out.println(messageToPrint + ",  Send blocked, Channel: " + name);
                 q.put(msg);
-                System.out.println(name + " send unblocked");
+                System.out.println(messageToPrint + ", Send unblocked, Channel: " + name);
                 if (timeout == -1) {
                     senderMonitor.wait();
                 } else {
@@ -79,8 +79,10 @@ public class Channel {
         } finally {
             try {
                 q.remove();
+                System.out.println("Timeout expired on Channel: " + name);
                 return false;
             } catch (NoSuchElementException ex) {
+                System.out.println("Message received on Channel: " + name);
                 return true;
             }
         }
@@ -102,11 +104,13 @@ public class Channel {
          */
     }
 
-    public boolean receive() {
+    public boolean receive(String messageToPrint) {
         try {
-            System.out.println(name + " receive blocked");
+          
+            System.out.println(messageToPrint + ",  Receive blocked, Channel: " + name);
             Boolean mes = q.take();
-            System.out.println(name + " receive unblocked");
+            System.out.println(messageToPrint + ",  Receive unblocked, Channel: " + name);
+            
             synchronized (senderMonitor) {
                 senderMonitor.notify();
             }

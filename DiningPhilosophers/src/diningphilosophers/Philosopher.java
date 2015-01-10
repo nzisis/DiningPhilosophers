@@ -74,21 +74,18 @@ public class Philosopher extends Thread {
     }
 
     public synchronized void pickUpLeftChopstick() {
-
-        dummy = leftChannel.receive();
-        System.out.println(name + " picked the left fork!!!");
+        dummy = leftChannel.receive("Philosopher: " + name);
     }
 
     public synchronized void pickUpRightChopstick() {
-        dummy = rightChannel.receive();
-        System.out.println(name + " picked the right fork!!!");
+        dummy = rightChannel.receive("Philosopher: " + name);
     }
 
     public synchronized void putDownChopsticks() {
-        leftChannel.send(true, -1);
-        System.out.println(name + " puts down the left fork");
-        rightChannel.send(true, -1);
-        System.out.println(name + " puts down the right fork");
+        leftChannel.send(true, -1,"Philosopher: " + name);
+        //System.out.println(name + " puts down the left fork");
+        rightChannel.send(true, -1,"Philosopher: " + name);
+        //System.out.println(name + " puts down the right fork");
     }
 
 }

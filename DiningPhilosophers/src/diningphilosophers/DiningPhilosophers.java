@@ -90,7 +90,7 @@ public class DiningPhilosophers {
         Fork forks[] = new Fork[numberOfPhilosophers];
         for (int i = 0; i < numberOfPhilosophers; i++) {
             System.out.println( i + " " + 2*i + " " + (2*i + 1));
-            forks[i] = new Fork(channels[2 * i], channels[2 * i + 1]);
+            forks[i] = new Fork(i,channels[2 * i], channels[2 * i + 1]);
         }
 
         Philosopher philosophers[] = new Philosopher[numberOfPhilosophers];
@@ -116,6 +116,21 @@ public class DiningPhilosophers {
         for (int i = 0; i < numberOfPhilosophers; i++) {
             philosophers[i].start();
         }
+        
+        
+        for (int i = 0; i < numberOfPhilosophers; i++) {
+            try {
+                philosophers[i].join();
+            }catch (InterruptedException ex) {
+                
+            }
+        }
+        
+        
+        for (int i = 0; i < numberOfPhilosophers; i++) {
+            forks[i].stopRunning();
+        }
+        
 
     }
 
