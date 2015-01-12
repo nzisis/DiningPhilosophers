@@ -15,32 +15,37 @@ import java.util.logging.Logger;
  */
 public class Philosopher extends Thread {
 
-    private Channel leftChannel;
-    private Channel rightChannel;
-
-    private String name;
-
+    private Channel leftChannel;//represents the left Channel of Philosopher
+    private Channel rightChannel;//represents the right Channel of Philosopher
+    
+    private String name;//the name of Philosopher
+    private boolean turn;// represents the turn that a philosopher will pick fork (if true he picks first the left fork otherwise the right) 
     private boolean dummy;
-    private boolean turn;
-
-    public Philosopher(String name, Channel leftChannel, Channel rightChannel, boolean turn) {
+    private int noExecution;
+    private int eatingTime;
+    private int currentEatingTime;
+    private int counter;
+    
+    public Philosopher(String name, Channel leftChannel, Channel rightChannel, boolean turn,int noExecution,int eatingTime) {
         this.name = name;
         this.leftChannel = leftChannel;
         this.rightChannel = rightChannel;
         this.turn = turn;
+        this.noExecution=noExecution;
+        this.eatingTime=eatingTime;
+        this.currentEatingTime=this.counter=0;
     }
 
     @Override
     public void run() {
-        int counter = 0;
-        while (counter < 2) {
+  
+        while (!isDone()) {
             counter++;
             think();
             if (turn) {
                 pickUpLeftChopstick();
-                //System.out.println(name+" picked the left fork!!!");
                 pickUpRightChopstick();
-                //System.out.println(name+" picked the right fork!!!");
+
             } else {
                 pickUpRightChopstick();
                 pickUpLeftChopstick();
@@ -48,13 +53,14 @@ public class Philosopher extends Thread {
             eat();
             putDownChopsticks();
         }
-        System.out.println(name + " IS DONE");
+        System.out.println(name + " IS DONE EATING");
     }
 
     public void eat() {
         Random rand = new Random();
         System.out.println(name + " is eating!!!");
         int eatTime = rand.nextInt(1000);
+        currentEatingTime+=eatTime;
         try {
             Thread.sleep(eatTime);
         } catch (InterruptedException ex) {
@@ -74,18 +80,27 @@ public class Philosopher extends Thread {
     }
 
     public synchronized void pickUpLeftChopstick() {
-        dummy = leftChannel.receive("Philosopher: " + name);
+        dummy = leftChannel.receive();
     }
 
     public synchronized void pickUpRightChopstick() {
-        dummy = rightChannel.receive("Philosopher: " + name);
+        dummy = rightChannel.receive();
     }
 
     public synchronized void putDownChopsticks() {
-        leftChannel.send(true, -1,"Philosopher: " + name);
-        //System.out.println(name + " puts down the left fork");
-        rightChannel.send(true, -1,"Philosopher: " + name);
-        //System.out.println(name + " puts down the right fork");
+        leftChannel.send(true, -1);
+        rightChannel.send(true, -1);
     }
 
+    public boolean isDone(){ 
+        if(currentEatingTime>=eatingTime){
+            return true;
+        }if(counter>noExecution){
+            return true;
+        }  
+        return false;
+        
+    }
+    
+    
 }

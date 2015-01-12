@@ -19,68 +19,10 @@ public class DiningPhilosophers {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        /*
-         int numberOfPhilosophers = 5;
-        
-         final Channel a = new Channel();
-        
-         Channel b = new Channel();
- 
-         Thread t1 = new Thread(new Runnable() {
-         @Override
-         public void run() {
-         try {
-         Thread.sleep(1000);
-         System.out.println("First Receiver");
-         a.receive();
-         } catch (InterruptedException ex) {
-         Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         }
-         });
-         t1.start();
-        
-         Thread t2 = new Thread(new Runnable() {
-         @Override
-         public void run() {
-         try {
-                    
-         Thread.sleep(3000);
-         System.out.println("Second Receiver");
-         a.receive();
-                    
-         } catch (InterruptedException ex) {
-         Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         }
-         });
-         t2.start();
-        
-        
-        
-         //CountDownLatch
-         Thread t3 = new Thread(new Runnable() {
-         @Override
-         public void run() {
-         try {
-         Thread.sleep(5000);
-                    
-         System.out.println("First Send");
-         a.send(true);
-         Thread.sleep(2000);
-                    
-         System.out.println("Second Send");
-         a.send(true);
-         } catch (InterruptedException ex) {
-         Logger.getLogger(DiningPhilosophers.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         }
-         });
-         t3.start();
-        
-         */
-
-        int numberOfPhilosophers = 3;
+        int numberOfPhilosophers = 5;//parameter in main
+        int eatingTime=15000;
+        int noExecution=2;
+        String[] philosophersName={"Aristotle","Plato","Konfuzius","Sokratis","Voltaire","Descartes"};
 
         Channel channels[] = new Channel[2 * numberOfPhilosophers];
         for (int i = 0; i < 2*numberOfPhilosophers; i++) {
@@ -89,7 +31,6 @@ public class DiningPhilosophers {
 
         Fork forks[] = new Fork[numberOfPhilosophers];
         for (int i = 0; i < numberOfPhilosophers; i++) {
-            System.out.println( i + " " + 2*i + " " + (2*i + 1));
             forks[i] = new Fork(i,channels[2 * i], channels[2 * i + 1]);
         }
 
@@ -104,9 +45,8 @@ public class DiningPhilosophers {
                 leftIndex += numberOfPhilosophers * 2;
             }
             int rightIndex = 2 * i;
-             System.out.println( i + " " + leftIndex + " " + rightIndex);
-            philosophers[i] = new Philosopher("" + i, channels[leftIndex], channels[rightIndex], turn);
-            //philosophers[i] = new Philosopher("" + i, channels[i], channels[(i + 1) % numberOfPhilosophers], turn);
+            philosophers[i] = new Philosopher(philosophersName[i], channels[leftIndex], channels[rightIndex], turn,noExecution,eatingTime);
+          
         }
 
         for (int i = 0; i < numberOfPhilosophers; i++) {
@@ -125,8 +65,7 @@ public class DiningPhilosophers {
                 
             }
         }
-        
-        
+         
         for (int i = 0; i < numberOfPhilosophers; i++) {
             forks[i].stopRunning();
         }

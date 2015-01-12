@@ -17,57 +17,30 @@ import java.util.logging.Logger;
  */
 public class Channel {
 
-    String name;
+   private String name;
 
-    BlockingQueue<Boolean> q;
-
-    boolean message;
-
-    Object object;
-
-    volatile boolean senderIsReady;
-
-    Object senderMonitor;
-
-    //boolean receiverIsReady;
-    public Channel(String name) {
+   private BlockingQueue<Boolean> q;//represents the message that channel transfers
+   private Object senderMonitor;//this variable is used for synchronized communication
+  
+  public Channel(String name) {
         this.name = name;
         q = new ArrayBlockingQueue(1);
         senderMonitor = new Object();
-
-        object = new Object();
-        message = true;
-        senderIsReady = false;
     }
 
-    /*
-     public void send(boolean value){
-     senderIsReady = true;
-     while(!receiverIsReady);
-     message = value;
-     object.notifyAll();
-     }
-    
-     public boolean receive(){
-     receiverIsReady = true;
-     while(!senderIsReady);   
-     synchronized(object){
-     try{
-     object.wait();
-     }catch(InterruptedException ex){
-
-     }
-     }
-     return message;
-     }*/
-    //Object object2;
-    public boolean send(boolean value,int timeout,String messageToPrint) {
+  /**
+   * Inserts the specified element into this queue, waiting up to the specified wait time
+   * @param value the value to sent
+   * @param timeout if timeout=-1 the channel waits how long to wait before giving up
+   * @return 
+   */
+    public boolean send(boolean value,int timeout) {
         Boolean msg = new Boolean(value);
         try {
             synchronized (senderMonitor) {
-                System.out.println(messageToPrint + ",  Send blocked, Channel: " + name);
+                //System.out.println(messageToPrint + ",  Send blocked, Channel: " + name);
                 q.put(msg);
-                System.out.println(messageToPrint + ", Send unblocked, Channel: " + name);
+                //System.out.println(messageToPrint + ", Send unblocked, Channel: " + name);
                 if (timeout == -1) {
                     senderMonitor.wait();
                 } else {
@@ -79,38 +52,21 @@ public class Channel {
         } finally {
             try {
                 q.remove();
-                System.out.println("Timeout expired on Channel: " + name);
+                //System.out.println("Timeout expired on Channel: " + name);
                 return false;
             } catch (NoSuchElementException ex) {
-                System.out.println("Message received on Channel: " + name);
+               // System.out.println("Message received on Channel: " + name);
                 return true;
             }
         }
-        /*
-         message = value;
-         System.out.println("Ready to send...");
-         synchronized (object) {
-         try {
-         System.out.println("Is waiting for receiver");
-         senderIsReady = true;
-         object.wait();
-            
-         } catch (InterruptedException ex) {
-
-         }
-         }
-         senderIsReady = false;
-         System.out.println("receiver is ready");
-         */
+      
     }
 
-    public boolean receive(String messageToPrint) {
+    public boolean receive() {
         try {
-          
-            System.out.println(messageToPrint + ",  Receive blocked, Channel: " + name);
+            //System.out.println(messageToPrint + ",  Receive blocked, Channel: " + name);
             Boolean mes = q.take();
-            System.out.println(messageToPrint + ",  Receive unblocked, Channel: " + name);
-            
+            //System.out.println(messageToPrint + ",  Receive unblocked, Channel: " + name);       
             synchronized (senderMonitor) {
                 senderMonitor.notify();
             }
@@ -121,17 +77,6 @@ public class Channel {
             return false;
         }
 
-        /*
-         synchronized (this) {
-         System.out.println("Ready to receive...");
-         while (!senderIsReady);
-
-         System.out.println("Sender ready...");
-         synchronized (object) {
-         object.notify();
-         }
-         return message;
-         }*/
     }
 
 }
