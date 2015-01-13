@@ -19,10 +19,10 @@ public class DiningPhilosophers {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        int numberOfPhilosophers = 5;//parameter in main
+        int numberOfPhilosophers = 6;//parameter in main
         int eatingTime=15000;
         int noExecution=2;
-        String[] philosophersName={"Aristotle","Plato","Konfuzius","Sokratis","Voltaire","Descartes"};
+        String[] philosophersName={"Aristotle","Plato","Confucius","Socrates","Voltaire","Descartes"};
 
         Channel channels[] = new Channel[2 * numberOfPhilosophers];
         for (int i = 0; i < 2*numberOfPhilosophers; i++) {
@@ -45,8 +45,8 @@ public class DiningPhilosophers {
                 leftIndex += numberOfPhilosophers * 2;
             }
             int rightIndex = 2 * i;
-            philosophers[i] = new Philosopher(philosophersName[i], channels[leftIndex], channels[rightIndex], turn,noExecution,eatingTime);
-          
+            philosophers[i] = new Philosopher(philosophersName[i], channels[leftIndex], channels[rightIndex], turn);
+            philosophers[i].addConstrain(Philosopher.ExitConstrain.LOOPS, noExecution);
         }
 
         for (int i = 0; i < numberOfPhilosophers; i++) {

@@ -22,7 +22,7 @@ public class Channel {
    private BlockingQueue<Boolean> q;//represents the message that channel transfers
    private Object senderMonitor;//this variable is used for synchronized communication
   
-  public Channel(String name) {
+   public Channel(String name) {
         this.name = name;
         q = new ArrayBlockingQueue(1);
         senderMonitor = new Object();
