@@ -21,7 +21,7 @@ public class DiningPhilosophers {
         // TODO code application logic here
         int numberOfPhilosophers = 6;//parameter in main
         int eatingTime=15000;
-        int noExecution=2;
+        int noExecution=10;
         String[] philosophersName={"Aristotle","Plato","Confucius","Socrates","Voltaire","Descartes"};
 
         Channel channels[] = new Channel[2 * numberOfPhilosophers];
