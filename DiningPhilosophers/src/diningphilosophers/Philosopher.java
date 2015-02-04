@@ -124,19 +124,32 @@ public class Philosopher extends Thread {
     }
 
     public synchronized void pickUpLeftChopstick() {
+        //perimene na laveis mhnuma oti to aristero fork einai eleu8ero
         dummy = leftChannel.receive();
     }
 
     public synchronized void pickUpRightChopstick() {
+        //perimene na laveis mhnuma oti to deksi fork einai eleu8ero
         dummy = rightChannel.receive();
     }
 
     public synchronized void putDownChopsticks() {
+        
+        //stile mhnuma oti teleiwses me to aristero fork
         leftChannel.send(true, -1);
+        
+        //stile mhnuma oti teleiwses me to deksi fork
         rightChannel.send(true, -1);
     }
 
+    /***
+     * Pros8etei enan periorismo. Otan estw enas apo autous ikanopoieitai o philosopher stamataei tis epanalhpseis
+     * @param con To eidos tou periorismou. LOOPS gia to plh8os twn epanalhpsewn ston philosopher kai EATING/THINKING_TIME gia ton sunoliko
+     * xrono pou 8a faei/skeftei o philosopher mexri na fugei apo to trapezi
+     * @param value arnhtikh timh sumainei apeiro. O xronos dinetai se milliseconds 
+     */
     public void addConstrain(ExitConstrain con, int value) {
+        
         switch (con) {
             case EATING_TIME:
                 eatingTime = value;

@@ -54,13 +54,16 @@ public class Channel {
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Channel.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } 
+        //prin vgei apo tin sunarthsh paei na afairesei to stoixeio gia na dei an egine h paralavh.
+        // An to pire o paraliptis tote h remove() 8a paraksei NoSuchElementException
+        finally {
             try {
                 q.remove();
-
+                //An den paragei NoSuchElementException shmainei oti den to pire o paraliptis(tautoxrona afairei kai to stoixeio)
                 return false;
             } catch (NoSuchElementException ex) {
-
+                //Den exei stoixeio h q, ara to pire o paraliptis
                 return true;
             }
         }
@@ -68,11 +71,12 @@ public class Channel {
     }
 
     public boolean receive() {
-
         try {
-
+            
+            //Pare to stoixeio 'h perimene mexri na mpei
             Boolean mes = q.take();
-
+            
+            //ksipna ton apostolea oti pires to stoixeio
             synchronized (senderMonitor) {
                 senderMonitor.notify();
             }

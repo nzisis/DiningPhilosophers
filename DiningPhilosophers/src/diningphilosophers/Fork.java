@@ -33,12 +33,17 @@ public class Fork extends Thread {
         isRunning = true;
 
         while (isRunning) {
-
+            
+            
+            //Steilnei mhnuma oti einai eleu8ero kai perimenei mexri 1.5 sec gia na to shkwsei o aristeros philosopher
             if (leftChannel.send(true, 1500)) {
+                //An to shkwse perimene na to afhsei
                 dummy1 = leftChannel.receive();
             }
 
+            //Steilnei mhnuma oti einai eleu8ero kai perimenei mexri 1.5 sec gia na to shkwsei o deksis philosopher
             if (rightChannel.send(true, 1500)) {
+                //An to shkwse perimene na to afhsei
                 dummy2 = rightChannel.receive();
             }
 

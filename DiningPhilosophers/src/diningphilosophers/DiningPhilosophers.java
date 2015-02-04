@@ -66,7 +66,6 @@ public class DiningPhilosophers {
             }
         }
         
-     
         for (int i = 0; i < numberOfPhilosophers; i++) {
             forks[i].stopRunning();
         }
