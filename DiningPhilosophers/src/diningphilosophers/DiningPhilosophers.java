@@ -65,6 +65,16 @@ public class DiningPhilosophers {
                 
             }
         }
+        
+        /*
+        for (int i = 0; i < numberOfPhilosophers; i++) {
+            try {
+                forks[i].join();
+            }catch (InterruptedException ex) {
+                
+            }
+        }
+        */
          
         for (int i = 0; i < numberOfPhilosophers; i++) {
             forks[i].stopRunning();

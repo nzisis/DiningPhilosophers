@@ -72,7 +72,10 @@ public class Philosopher extends Thread {
             eat();
             putDownChopsticks();
         }
+       leftChannel.close();
+        rightChannel.close();
         System.out.println(name + " IS DONE EATING");
+        
     }
 
     public void eat() {

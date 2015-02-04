@@ -21,11 +21,13 @@ public class Channel {
 
    private BlockingQueue<Boolean> q;//represents the message that channel transfers
    private Object senderMonitor;//this variable is used for synchronized communication
+   private boolean open;
   
    public Channel(String name) {
         this.name = name;
         q = new ArrayBlockingQueue(1);
         senderMonitor = new Object();
+        open=true;
     }
 
   /**
@@ -36,6 +38,12 @@ public class Channel {
    */
     public boolean send(boolean value,int timeout) {
         Boolean msg = new Boolean(value);
+        
+        
+        if(!open){
+            return true;
+        }
+        
         try {
             synchronized (senderMonitor) {
                 //System.out.println(messageToPrint + ",  Send blocked, Channel: " + name);
@@ -63,6 +71,12 @@ public class Channel {
     }
 
     public boolean receive() {
+        
+        
+        if(!open){
+            return false;
+        }
+        
         try {
             //System.out.println(messageToPrint + ",  Receive blocked, Channel: " + name);
             Boolean mes = q.take();
@@ -78,5 +92,13 @@ public class Channel {
         }
 
     }
-
+    
+    public void close(){
+      //  open=false;              
+    }
+    
+    public boolean isOpen(){
+        return open;
+    }
+    
 }
