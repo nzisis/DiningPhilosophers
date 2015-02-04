@@ -34,21 +34,14 @@ public class Fork extends Thread {
 
         while (isRunning) {
 
-            if (leftChannel.isOpen()) {
+            if (leftChannel.send(true, 1500)) {
+                dummy1 = leftChannel.receive();
+            }
 
-                if (leftChannel.send(true, 1500)) {
-                    dummy1 = leftChannel.receive();
-                }
+            if (rightChannel.send(true, 1500)) {
+                dummy2 = rightChannel.receive();
             }
-            if (rightChannel.isOpen()) {
-                if (rightChannel.send(true, 1500)) {
-                    dummy2 = rightChannel.receive();
-                }
-            }
-            
-            if(!leftChannel.isOpen() && !rightChannel.isOpen()){
-                isRunning=false;
-            }
+
         }
     }
 
